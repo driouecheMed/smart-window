@@ -8,8 +8,10 @@
 
 import os
 import time
+import sqlite3
 
 sleep_period = 5
+db = "127.0.0.1/"
 
 # get the lux value (from ldr.txt file)
 def get_ldr_value():
