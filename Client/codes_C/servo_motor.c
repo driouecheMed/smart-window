@@ -1,7 +1,7 @@
 /*
  * Copyright: DRIOUECHE Mohammed
  * Last Update: 2 Sptember 2020
- * This File is for commanding the servo-motor
+ * This File is for commanding the servo-motor (by writing "UP" & "DOWN" in "servo_motor.txt")
  */
 
 #include<stdio.h>
@@ -28,6 +28,7 @@ void main(int argc, char* argv[]){
 		}else{
 			fprintf(stderr, "Arguments Invalid. \nPlease enter 1 for UP and 2 for DOWN.\n");	
 		}
+		fclose(f);
 	}else{
 		fprintf(stderr, "Too Many/Less arguments.\n");
 	}
