@@ -11,7 +11,7 @@ import time
 import sqlite3
 
 sleep_period = 5
-db = "127.0.0.1/"
+db = "../../Client/database/smartwindow.db"
 
 # get the lux value (from ldr.txt file)
 def get_ldr_value():
@@ -20,6 +20,16 @@ def get_ldr_value():
 	values = float(values[0])
 	f.close()
 	return values
+
+# save new lux value to database
+def save_ldr_value(value):
+	conn=sqlite3.connect(db)
+	curs=conn.cursor()
+	curs.execute("INSERT INTO ldr values(datetime('now'), (?))", (value,))
+	conn.commit()
+	conn.close()
+
+
 
 # get the servo motor position (from servo_motor.txt file)
 def get_motor_position():
@@ -30,13 +40,23 @@ def get_motor_position():
 	f.close()
 	return position
 
+# save time when motor change direction and direction (up/down) to db
+def save_motor_position(value):
+	conn=sqlite3.connect(db)
+	curs=conn.cursor()
+	curs.execute("INSERT INTO motor values(datetime('now'), (?))", (value,))
+	conn.commit()
+	conn.close()
+
 # move the sades the the opposite position of the current one
 def change_motor_position(position):
 	f = open('../servo_motor.txt','w')
 	if(position == 'up'):
 		f.write('down')
+		save_motor_position('down')
 	else:
 		f.write('up')
+		save_motor_position('up')
 	f.close()
 
 def main():
@@ -45,6 +65,7 @@ def main():
 		position = get_motor_position()
 		
 		#save to db
+		save_ldr_value(lux)
 
 		print("lux="+str(lux))
 		print("position="+str(position))
