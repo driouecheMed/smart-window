@@ -18,8 +18,10 @@ It can be easily calculated based on ldr (photoresistance) value.
 		| Full sun (day)	| 50 000 -> 100 000 lux |
 		---------------------------------------------
 '''
+
 f = open('../ldr.txt','r')
 values = f.readlines()
 values = float(values[0])
 print(values)
-f.close();
+f.close()
+
