@@ -90,6 +90,7 @@
       <div class="w-100"></div>
 
       <!-- First col -->
+
       <div class="col" style="margin: 5px;">
         <div class="border rounded border-primary" style="padding: 5px;">
           <div class="d-flex justify-content-center">
@@ -105,11 +106,22 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>22 june 2020 15:20</td>
-                  <td>UP</td>
+                <?php
+                // Connexion à la base de données
+                //$dbh = new PDO("sqlite:/../database/smartwindow.db");
+                $dbh = new PDO("sqlite:/home/mohammed/0_Smart_Window/Client/database/smartwindow.db");
+                // Requête de selection
+                $sql = "SELECT * FROM motor";
+                // Affichage des résultats
+                foreach ($dbh->query($sql) as $row) {
+                  echo "<tr>
+                  <td>" . $row[0] . "</td>
+                  <td>" . $row[1] . "</td>
                   <td>Manual</td>
-                </tr>
+                </tr>";
+                }
+                $dbh = null;
+                ?>
               </tbody>
             </table>
           </div>
