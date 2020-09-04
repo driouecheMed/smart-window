@@ -7,24 +7,22 @@
 
 #include<stdio.h>
 #include<string.h>
+#include "motor.h"
 
-void main(int argc, char* argv[]){
-
-	FILE* f;
+void main(void){
+	FILE* fp;
 	char direction[4];
 	
-	//Get Motor Position
-	f = fopen("../servo_motor.txt", "r");
-	fscanf(f, "%s", direction);
-	fclose(f);
+	strcpy(direction, get_position());
 
 	//Command to the opposite position
-	f = fopen("../servo_motor.txt", "w");
+	fp = fopen("../servo_motor.txt", "w");
+	
 	if(strcmp(direction,"up") == 0){
-		fprintf(f,"down");
+		fprintf(fp,"down");
 	}else{
-		fprintf(f,"up");
+		fprintf(fp,"up");
 	}
-	fclose(f);
+	fclose(fp);
 }
 
