@@ -1,6 +1,6 @@
 <!--
  * Copyright: DRIOUECHE Mohammed
- * Last Update: 3 Sptember 2020
+ * Last Update: 4 Sptember 2020
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -11,7 +11,44 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
-  <script>
+  <?php
+  // Connexion à la base de données
+  //$dbh = new PDO("sqlite:/../database/smartwindow.db");
+  $dbh = new PDO("sqlite:/home/mohammed/0_Smart_Window/Client/database/smartwindow.db");
+  // Requête de selection
+  $sql = "SELECT * FROM ldr";
+  // Affichage des résultats
+  $obj = array();
+  $i = 0;
+  foreach ($dbh->query($sql) as $row) {
+    $obj[$i] = json_encode(array('x' => $row[0], 'y' => $row[1]));
+    $i = $i + 1;
+  }
+  $dbh = null;
+  //echo json_encode($obj, JSON_FORCE_OBJECT);
+  ?>
+
+  <script type="text/javascript">
+    /*var obj = "<?php echo json_encode($obj, JSON_FORCE_OBJECT); ?>";
+    document.write(obj);*/
+    var data = [{
+        x: 500,
+        y: 100
+      },
+      {
+        x: 600,
+        y: 414
+      },
+      {
+        x: 700,
+        y: 460
+      },
+      {
+        x: 800,
+        y: 450
+      }
+    ]
+
     window.onload = function() {
       var lineChart = new CanvasJS.Chart("lineChartContainer", {
         animationEnabled: true,
@@ -23,51 +60,10 @@
         data: [{
           type: "line",
           indexLabelFontSize: 16,
-          dataPoints: [{
-              y: 450
-            },
-            {
-              y: 414
-            },
-            {
-              y: 460
-            },
-            {
-              y: 450
-            },
-            {
-              y: 500
-            },
-            {
-              y: 480
-            },
-          ]
-        }]
-      });
-      var pieChart = new CanvasJS.Chart("pieChartContainer", {
-        animationEnabled: true,
-        title: {
-          text: "Window Shades Summary (since deploiement)",
-          fontWeight: "normal"
-        },
-        data: [{
-          type: "pie",
-          startAngle: 0,
-          yValueFormatString: "##0.00\"%\"",
-          indexLabel: "{label} {y}",
-          dataPoints: [{
-              y: 60,
-              label: "UP"
-            },
-            {
-              y: 40,
-              label: "DOWN"
-            }
-          ]
+          dataPoints: data
         }]
       });
       lineChart.render();
-      pieChart.render();
 
     }
   </script>
@@ -84,37 +80,16 @@
     <div class="row">
       <!-- First line -->
       <!-- First col -->
-      <div class="col" style="margin: 5px;">
+      <div class="col-12" style="margin: 5px;">
         <div class="border rounded border-primary" style="padding: 5px;">
           <div id="lineChartContainer" style="height: 370px; width: 100%;"></div>
         </div>
       </div>
 
-      <!-- Second col -->
-      <div class="col" style="margin: 5px;">
-        <div class="border rounded border-primary" style="padding: 5px;">
-          <div id="pieChartContainer" style="height: 370px; width: 100%;"></div>
-        </div>
-      </div>
-
       <!-- Second line -->
       <div class="w-100"></div>
-      <!-- First col -->
-      <div class="col" style="margin: 5px;">
-        <div class="border rounded border-primary " style="padding: 5px;">
-          <div class="d-flex justify-content-center">
-            <h3>Command Window Shades </h3>
-          </div>
-          <div>
-            <p>The shades are actual down, do you wanna move it up?</p>
-          </div>
-          <div class="d-flex justify-content-center">
-            <button class="btn btn-outline-primary" type="submit">UP</button>
-          </div>
-        </div>
-      </div>
 
-      <!-- Second col -->
+      <!-- First col -->
       <div class="col" style="margin: 5px;">
         <div class="border rounded border-primary" style="padding: 5px;">
           <div class="d-flex justify-content-center">
@@ -137,6 +112,21 @@
                 </tr>
               </tbody>
             </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Second col -->
+      <div class="col" style="margin: 5px;">
+        <div class="border rounded border-primary " style="padding: 5px;">
+          <div class="d-flex justify-content-center">
+            <h3>Command Window Shades </h3>
+          </div>
+          <div>
+            <p>The shades are actual down, do you wanna move it up?</p>
+          </div>
+          <div class="d-flex justify-content-center">
+            <button class="btn btn-outline-primary" type="submit">UP</button>
           </div>
         </div>
       </div>
