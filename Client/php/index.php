@@ -135,12 +135,23 @@
           <div class="d-flex justify-content-center">
             <h3>Command Window Shades </h3>
           </div>
-          <div>
             <p>The shades are actual down, do you wanna move it up?</p>
-          </div>
-          <div class="d-flex justify-content-center">
-            <button class="btn btn-outline-primary" type="submit">UP</button>
-          </div>
+            <?php
+            function display_form(){
+              echo '<form method = "post">';
+              echo '<div class="d-flex justify-content-center">';
+              echo '<button class="btn btn-outline-primary" type="submit" name="change_position" value="change_position">UP</button>';
+              echo '</div>';
+              echo '</form>';
+            }
+            if (!isset($_POST["change_position"])) {
+              display_form(); 
+            } else {
+              //exec();
+              echo 'Executed!';
+              display_form();
+            }
+            ?>
         </div>
       </div>
 
