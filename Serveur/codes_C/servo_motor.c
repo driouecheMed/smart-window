@@ -1,36 +1,29 @@
 /*
  * Copyright: DRIOUECHE Mohammed
- * Last Update: 2 Sptember 2020
- * This File is for commanding the servo-motor (by writing "UP" & "DOWN" in "servo_motor.txt")
+ * Last Update: 4 Sptember 2020
+ * This File is for changing the servo-motor position (by writing "UP" & "DOWN" in "servo_motor.txt")
  */
 
 #include<stdio.h>
-
-/*
- * SERVO_UP : servo motor rotation when user want to pull up the window shade
- * SERVO_DOWN : servo motor rotation when user want to pull down the window shade
- */
-#define SERVO_UP 1
-#define SERVO_DOWN 2
+#include<string.h>
 
 void main(int argc, char* argv[]){
 
 	FILE* f;
-	int direction;
+	char direction[4];
+	
+	//Get Motor Position
+	f = fopen("../servo_motor.txt", "r");
+	fscanf(f, "%s", direction);
+	fclose(f);
 
-	if(argc == 2){
-		direction = atoi(argv[1]);
-		f = fopen("../servo_motor.txt", "w");
-		if(direction == SERVO_UP){
-			fprintf(f,"up");
-		}else if(direction == SERVO_DOWN){
-			fprintf(f,"down");
-		}else{
-			fprintf(stderr, "Arguments Invalid. \nPlease enter 1 for UP and 2 for DOWN.\n");	
-		}
-		fclose(f);
+	//Command to the opposite position
+	f = fopen("../servo_motor.txt", "w");
+	if(strcmp(direction,"up") == 0){
+		fprintf(f,"down");
 	}else{
-		fprintf(stderr, "Too Many/Less arguments.\n");
+		fprintf(f,"up");
 	}
+	fclose(f);
 }
 
