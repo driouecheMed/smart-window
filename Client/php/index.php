@@ -173,8 +173,7 @@
             $dbh->exec($sql);
             $dbh = null;
 
-            echo "Executed!!";
-            display_form();
+            echo "Executed!, Go Back to Update Screen!";
           }
           ?>
         </div>
