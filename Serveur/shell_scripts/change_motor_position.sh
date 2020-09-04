@@ -1,3 +1,3 @@
 #/bin/bash
 cd  ../codes_C
-./a.out
+./change_motor_position
