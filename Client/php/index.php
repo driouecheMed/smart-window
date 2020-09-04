@@ -165,7 +165,15 @@
             $myfile = fopen("/home/mohammed/0_Smart_Window/Serveur/servo_motor.txt", "w");
             fwrite($myfile, opposite_direction($position));
             fclose($myfile);
-            echo 'Executed!';
+
+            // Database
+            //$dbh = new PDO("sqlite:/../database/smartwindow.db");
+            $dbh = new PDO("sqlite:/home/mohammed/0_Smart_Window/Client/database/smartwindow.db");
+            $sql = "INSERT INTO motor_history VALUES (datetime('now'), " . $dbh->quote(opposite_direction($position)) . ",'Manual' )";
+            $dbh->exec($sql);
+            $dbh = null;
+
+            echo "Executed!!";
             display_form();
           }
           ?>

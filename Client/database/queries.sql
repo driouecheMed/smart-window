@@ -1,7 +1,7 @@
 /*
  * Copyright: 		DRIOUECHE Mohammed
  * Created : 		2 September 2020
- * Last Update: 	2 September 2020
+ * Last Update: 	4 September 2020
  * This File contain all database queries.
  */
 
@@ -19,7 +19,7 @@ CREATE TABLE motor (_timestamp DATETIME,
  * _action : UP/DOWN
  * _type : manual/automatic
  */
-CREATE TABLE log (_timestamp DATETIME, 
+CREATE TABLE motor_history (_timestamp DATETIME, 
                   _action VARCHAR(4),
                  _type VARCHAR(9));
 
