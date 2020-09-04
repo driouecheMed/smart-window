@@ -132,26 +132,41 @@
       <!-- Second col -->
       <div class="col" style="margin: 5px;">
         <div class="border rounded border-primary " style="padding: 5px;">
+
           <div class="d-flex justify-content-center">
             <h3>Command Window Shades </h3>
           </div>
-            <p>The shades are actual down, do you wanna move it up?</p>
-            <?php
-            function display_form(){
-              echo '<form method = "post">';
-              echo '<div class="d-flex justify-content-center">';
-              echo '<button class="btn btn-outline-primary" type="submit" name="change_position" value="change_position">UP</button>';
-              echo '</div>';
-              echo '</form>';
-            }
-            if (!isset($_POST["change_position"])) {
-              display_form(); 
+          <?php
+          //Functions
+          function opposite_direction($position)
+          {
+            if ($position == "down") {
+              return "up";
             } else {
-              //exec();
-              echo 'Executed!';
-              display_form();
+              return "down";
             }
-            ?>
+          }
+          function display_form()
+          {
+            echo '<form method = "post">';
+            echo '<div class="d-flex justify-content-center">';
+            echo '<button class="btn btn-outline-primary" type="submit" name="change_position" value="change_position">UP</button>';
+            echo '</div>';
+            echo '</form>';
+          }
+          //Body
+          $position = exec("sh /home/mohammed/0_Smart_Window/Serveur/shell_scripts/get_motor_position.sh", $position);
+          echo "<p>The shades are actual ".$position.", do you wanna move it ".opposite_direction($position)."?</p>";
+
+          if (!isset($_POST["change_position"])) {
+            display_form();
+          } else {
+            //exec("sh /home/mohammed/0_Smart_Window/Serveur/shell_scripts/change_motor_position.sh");
+            exec("python3 /home/mohammed/0_Smart_Window/Serveur/Python/change_motor_value.py");
+            echo 'Executed!';
+            display_form();
+          }
+          ?>
         </div>
       </div>
 
