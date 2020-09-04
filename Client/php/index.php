@@ -150,19 +150,21 @@
           {
             echo '<form method = "post">';
             echo '<div class="d-flex justify-content-center">';
-            echo '<button class="btn btn-outline-primary" type="submit" name="change_position" value="change_position">UP</button>';
+            echo '<button class="btn btn-outline-primary" type="submit" name="change_position" value="change_position"> Move Shades </button>';
             echo '</div>';
             echo '</form>';
           }
           //Body
           $position = exec("sh /home/mohammed/0_Smart_Window/Serveur/shell_scripts/get_motor_position.sh", $position);
-          echo "<p>The shades are actual ".$position.", do you wanna move it ".opposite_direction($position)."?</p>";
+          echo "<p>The shades are actual " . $position . ", do you wanna move it " . opposite_direction($position) . "?</p>";
 
           if (!isset($_POST["change_position"])) {
             display_form();
           } else {
-            //exec("sh /home/mohammed/0_Smart_Window/Serveur/shell_scripts/change_motor_position.sh");
-            exec("python3 /home/mohammed/0_Smart_Window/Serveur/Python/change_motor_value.py");
+            //exec("sh ./../Serveur/shell_scripts/change_motor_position.sh");
+            $myfile = fopen("/home/mohammed/0_Smart_Window/Serveur/servo_motor.txt", "w");
+            fwrite($myfile, opposite_direction($position));
+            fclose($myfile);
             echo 'Executed!';
             display_form();
           }
