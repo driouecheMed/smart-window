@@ -112,13 +112,13 @@
                 //$dbh = new PDO("sqlite:/../database/smartwindow.db");
                 $dbh = new PDO("sqlite:/home/mohammed/0_Smart_Window/Client/database/smartwindow.db");
                 // Requête de selection
-                $sql = "SELECT * FROM motor";
+                $sql = "SELECT * FROM motor_history ORDER BY _timestamp DESC LIMIT 5";
                 // Affichage des résultats
                 foreach ($dbh->query($sql) as $row) {
                   echo "<tr>
                   <td>" . $row[0] . "</td>
-                  <td>" . $row[1] . "</td>
-                  <td>Manual</td>
+                  <td style='text-transform: uppercase;'>" . $row[1] . "</td>
+                  <td>" . $row[2] . "</td>
                 </tr>";
                 }
                 $dbh = null;
