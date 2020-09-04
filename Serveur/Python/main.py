@@ -45,7 +45,7 @@ def get_motor_position():
 def save_motor_position(value):
 	conn=sqlite3.connect(db)
 	curs=conn.cursor()
-	curs.execute("INSERT INTO motor values(datetime('now'), (?))", (value,))
+	curs.execute("INSERT INTO motor_history values(datetime('now'), (?), 'Automatic')", (value,))
 	conn.commit()
 	conn.close()
 

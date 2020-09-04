@@ -10,11 +10,7 @@
 
 CREATE TABLE ldr (_timestamp DATETIME, 
                   _value NUMERIC);
-/*
- * _position : UP/DOWN
- */
-CREATE TABLE motor (_timestamp DATETIME, 
-                    _position VARCHAR(4));
+
 /*
  * _action : UP/DOWN
  * _type : manual/automatic
