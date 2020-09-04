@@ -1,6 +1,7 @@
 '''
- * Copyright: DRIOUECHE Mohammed
- * Last Update: 2 Sptember 2020
+ * Copyright: 		DRIOUECHE Mohammed
+ * Created : 		2 September 2020
+ * Last Update: 	2 Sesptember 2020
  * This File is for reading ldr values (from file "ldr.txt")
 '''
 

@@ -1,6 +1,7 @@
 /*
- * Copyright: DRIOUECHE Mohammed
- * Last Update: 4 Sptember 2020
+ * Copyright: 		DRIOUECHE Mohammed
+ * Created : 		2 September 2020
+ * Last Update: 	4 September 2020
  * This File is for changing the servo-motor position (by writing "UP" & "DOWN" in "servo_motor.txt")
  */
 
