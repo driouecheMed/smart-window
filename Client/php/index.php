@@ -12,13 +12,11 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
+  <!-- Get LDR Values from DB -->
   <?php
-  // Connexion à la base de données
   //$dbh = new PDO("sqlite: ../database/smartwindow.db");
   $dbh = new PDO("sqlite:/home/mohammed/0_Smart_Window/Client/database/smartwindow.db");
-  // Requête de selection
   $sql = "SELECT * FROM ldr ORDER BY _timestamp DESC LIMIT 5";
-  // Affichage des résultats
   $res = array();
   $i = 0;
   foreach ($dbh->query($sql) as $row) {
@@ -28,27 +26,27 @@
   $dbh = null;
   ?>
 
+  <!-- Chart Script -->
   <script type="text/javascript">
-    var obj = '<?php echo json_encode($res); ?>';
-
-    obj = obj.replace('["{', '');
-    obj = obj.replace('}"]', '');
-
-
-    obj = obj.split('}","{');
+    var res = '<?php echo json_encode($res); ?>';
+    // res is a sring "[{"timestamp":..},...]"
+    // We should process it to have an a aray of object {x: int, y:int}
+    // we delete unnecessary char, and split each object string to array item
+    res = res.replace('["{', '');
+    res = res.replace('}"]', '');
+    res = res.split('}","{');
+    //res is now an array of ["timestamp":"2020-09-02 19:18:35","value":"582000"]
     var data = new Array();
-    //obj is now an rray of ["timestamp":"2020-09-02 19:18:35","value":"582000"]
-    for (let i = 0; i < obj.length; i++) {
+    for (let i = 0; i < res.length; i++) {
       let temp = {
         x: 0,
         y: 0
       };
-      temp.x = parseInt(obj[i].substring(23, 32).replace(':', '').replace(':', ''));
-      temp.y = parseInt(obj[i].substring(43, obj[i].length - 1));
-
+      temp.x = parseInt(res[i].substring(23, 32).replace(':', '').replace(':', ''));
+      temp.y = parseInt(res[i].substring(43, res[i].length - 1));
       data.push(temp);
     }
-
+    // Chart
     window.onload = function() {
       var lineChart = new CanvasJS.Chart("lineChartContainer", {
         animationEnabled: true,
@@ -67,7 +65,6 @@
         }]
       });
       lineChart.render();
-
     }
   </script>
 </head>
@@ -82,7 +79,7 @@
   <div class="container">
     <div class="row">
       <!-- First line -->
-      <!-- First col -->
+      <!-- First col : LDR Values Chart -->
       <div class="col-12" style="margin: 5px;">
         <div class="border rounded border-primary" style="padding: 5px;">
           <div id="lineChartContainer" style="height: 370px; width: 100%;"></div>
@@ -92,8 +89,7 @@
       <!-- Second line -->
       <div class="w-100"></div>
 
-      <!-- First col -->
-
+      <!-- First col: Table of motor position history -->
       <div class="col" style="margin: 5px;">
         <div class="border rounded border-primary" style="padding: 5px;">
           <div class="d-flex justify-content-center">
@@ -110,12 +106,9 @@
               </thead>
               <tbody>
                 <?php
-                // Connexion à la base de données
-                //$dbh = new PDO("sqlite:/../database/smartwindow.db");
+                //$dbh = new PDO("sqlite:../database/smartwindow.db");
                 $dbh = new PDO("sqlite:/home/mohammed/0_Smart_Window/Client/database/smartwindow.db");
-                // Requête de selection
                 $sql = "SELECT * FROM motor_history ORDER BY _timestamp DESC LIMIT 5";
-                // Affichage des résultats
                 foreach ($dbh->query($sql) as $row) {
                   echo "<tr>
                   <td>" . $row[0] . "</td>
@@ -131,10 +124,9 @@
         </div>
       </div>
 
-      <!-- Second col -->
+      <!-- Second col: Command Shades Manually -->
       <div class="col" style="margin: 5px;">
         <div class="border rounded border-primary " style="padding: 5px;">
-
           <div class="d-flex justify-content-center">
             <h3>Command Window Shades </h3>
           </div>
@@ -159,7 +151,6 @@
           //Body
           $position = exec("sh /home/mohammed/0_Smart_Window/Serveur/shell_scripts/get_motor_position.sh", $position);
           echo "<p>The shades are actual " . $position . ", do you wanna move it " . opposite_direction($position) . "?</p>";
-
           if (!isset($_POST["change_position"])) {
             display_form();
           } else {
@@ -183,6 +174,8 @@
 
     </div>
   </div>
+
+  <!-- footer -->
   <footer class="page-footer font-small blue pt-4">
     <div class="footer-copyright text-center py-3">© 2020 Copyright:
       <a href="https://github.com/driouecheMed"> Drioueche Mohammed</a>
