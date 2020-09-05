@@ -1,7 +1,7 @@
 <!--
  * Copyright: 		DRIOUECHE Mohammed
- * Created : 		3 September 2020
- * Last Update: 	4 September 2020
+ * Created : 		  3 September 2020
+ * Last Update: 	5 September 2020
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -14,41 +14,40 @@
 
   <?php
   // Connexion à la base de données
-  //$dbh = new PDO("sqlite:/../database/smartwindow.db");
+  //$dbh = new PDO("sqlite: ../database/smartwindow.db");
   $dbh = new PDO("sqlite:/home/mohammed/0_Smart_Window/Client/database/smartwindow.db");
   // Requête de selection
-  $sql = "SELECT * FROM ldr";
+  $sql = "SELECT * FROM ldr ORDER BY _timestamp DESC LIMIT 5";
   // Affichage des résultats
-  $obj = array();
+  $res = array();
   $i = 0;
   foreach ($dbh->query($sql) as $row) {
-    $obj[$i] = json_encode(array('x' => $row[0], 'y' => $row[1]));
+    $res[$i] = json_encode(array('timestamp' => $row[0], 'value' => $row[1]));
     $i = $i + 1;
   }
   $dbh = null;
-  //echo json_encode($obj, JSON_FORCE_OBJECT);
   ?>
 
   <script type="text/javascript">
-    /*var obj = "<?php echo json_encode($obj, JSON_FORCE_OBJECT); ?>";
-    document.write(obj);*/
-    var data = [{
-        x: 500,
-        y: 100
-      },
-      {
-        x: 600,
-        y: 414
-      },
-      {
-        x: 700,
-        y: 460
-      },
-      {
-        x: 800,
-        y: 450
-      }
-    ]
+    var obj = '<?php echo json_encode($res); ?>';
+
+    obj = obj.replace('["{', '');
+    obj = obj.replace('}"]', '');
+
+
+    obj = obj.split('}","{');
+    var data = new Array();
+    //obj is now an rray of ["timestamp":"2020-09-02 19:18:35","value":"582000"]
+    for (let i = 0; i < obj.length; i++) {
+      let temp = {
+        x: 0,
+        y: 0
+      };
+      temp.x = parseInt(obj[i].substring(23, 32).replace(':', '').replace(':', ''));
+      temp.y = parseInt(obj[i].substring(43, obj[i].length - 1));
+
+      data.push(temp);
+    }
 
     window.onload = function() {
       var lineChart = new CanvasJS.Chart("lineChartContainer", {
@@ -57,6 +56,9 @@
         title: {
           text: "Last 24 Hours Lux Values",
           fontWeight: "normal"
+        },
+        axisX: {
+          valueFormatString: "##:##:##",
         },
         data: [{
           type: "line",
@@ -185,7 +187,7 @@
     <div class="footer-copyright text-center py-3">© 2020 Copyright:
       <a href="https://github.com/driouecheMed"> Drioueche Mohammed</a>
     </div>
-  </footer> 
+  </footer>
 
 </body>
 
