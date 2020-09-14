@@ -15,7 +15,7 @@ This project:
 ### Hardware
 - Raspberry pi
 - LDR
-- Servo-motor
+- Stepper motor *(In the file .txt i named "servo-moter" but it should be a Stepper motor  :no_mouth: )* 
 
 ### Server (Raspberry pi)
 - Written in C, python and shell.
